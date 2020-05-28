@@ -96,6 +96,18 @@ function infinite_post_scroll_get_previus_post( $post_object ) {
 		$term_tax_id, 'publish', $post_object->post_date )
 	);
 
+	/**
+	 * If you don't need a category restriction, the query becomes cleaner:
+	 
+	$previous_post_id = $wpdb->get_var( $wpdb->prepare(
+		"SELECT ID FROM $wpdb->posts
+		WHERE post_status = %s
+		AND post_date < %s
+		ORDER BY post_date DESC LIMIT 1",
+		'publish', $post_object->post_date )
+	);
+	*/
+
 	return $previous_post_id;
 }
 
@@ -122,19 +134,22 @@ function infinite_post_scroll_get_rendered_post( $post_id ) {
 	$content      = wpautop( get_the_content( null, false, $post_id ) );
 	$url  	 	  = get_permalink( $post_id );
 
+	// Let's get a list of tags.
 	$post_tags = get_the_term_list( $post_id, 'post_tag', '<p>Tags: ', ', ', '</p>' );
 
+	// Some Relevanssi Premium related posts would be nice as well:
 	$related_posts = '';
 	if ( function_exists( 'relevanssi_related_posts' ) ) {
 		$related_posts = relevanssi_related_posts();
 	}
 
+	// Let's build it all here:
 	$rendered_post = <<<EOHTML
 <hr />
 
 <article id="post-$post_id" class="article-$post_id" data-url="$url" data-id="$post_id">
 	<header class="entry-header">
-		<h1 id="scroll-to" class="entry-title">$title</h1>
+		<h1 class="entry-title">$title</h1>
 
 		<div class="entry-meta">
 			$entry_meta
