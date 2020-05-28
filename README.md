@@ -49,11 +49,10 @@ In your theme style sheet, make both of these invisible:
 
 Add any other styles you wish.
 
-If you have some kind of footer, you may want to remove that from single post
-templates. Having to chase a footer on a page with infinite scroll is super
-frustrating. I replaced the regular footer template with a simpler footer
-template that just closes the `div` tags opened earlier, runs `wp_footer()`
-and then closes `body` and `html` tags.
+Having to chase a footer on a page with infinite scroll is super
+frustrating. It's a good idea to replace the footer on an infinite scroll page
+with a fixed position footer that remains constantly visible, or something
+like that.
 
 ### Editing plugin code
 
